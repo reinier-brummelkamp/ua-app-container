@@ -1,0 +1,363 @@
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../ua-app/App.html">
+
+<link rel="import" href="sharedStyles.html">
+
+<dom-module id="app-container">
+    <template>
+        <style include="shared-styles"></style>
+        <style>
+            :host {
+                flex: 1;
+                display: -webkit-flex;
+                display: flex;
+                -webkit-flex-direction: column;
+                flex-direction: column;
+                height: 100vh;
+            }
+        </style>
+        <div id="appHeader" class="app-header">
+            <!-- BEGIN Application Header -->
+            <template is="dom-if" if="[[appHeaderLoading]]">
+                <content id="appHeaderLoader" select=".app-header-loader"></content>
+            </template>
+            <template is="dom-if" if="[[!appHeaderLoading]]">
+                <content id="appHeaderContents" select=".app-header-contents"></content>
+            </template>
+            <!-- END Application Header -->
+        </div>
+        <div id="appFrame" class="app-frame">
+            <div id="modalBackdrop" class="modal-backdrop hide">
+                <content id="modalBackdropContents" select=".modal-backdrop-contents"></content>
+            </div>
+            <div id="appLeftFrame" class="app-left-frame">
+                <!-- BEGIN Application Frame Left -->
+                <template is="dom-if" if="[[appLeftFrameLoading]]">
+                    <content id="appLeftFrameLoader" select=".app-left-frame-loader"></content>
+                </template>
+                <template is="dom-if" if="[[!appLeftFrameLoading]]">
+                    <content id="appLeftFrameContents" select=".app-left-frame-contents"></content>
+                </template>
+                <!-- END Application Frame Left -->
+            </div>
+            <div id="appCenterFrame" class="app-center-frame">
+                <!-- BEGIN Application Frame Center -->
+                <template is="dom-if" if="[[appCenterFrameLoading]]">
+                    <content id="appCenterFrameLoader" select=".app-center-frame-loader"></content>
+                </template>
+                <template is="dom-if" if="[[!appCenterFrameLoading]]">
+                    <content id="appCenterFrameContents" select=".app-center-frame-contents"></content>
+                </template>
+                <!-- END Application Frame Center -->
+            </div>
+            <div id="appRightFrame" class="app-right-frame">
+                <!-- BEGIN Application Frame Right -->
+                <template is="dom-if" if="[[appRightFrameLoading]]">
+                    <content id="appRightFrameLoader" select=".app-right-frame-loader"></content>
+                </template>
+                <template is="dom-if" if="[[!appRightFrameLoading]]">
+                    <content id="appRightFrameContents" select=".app-right-frame-contents"></content>
+                </template>
+                <!-- END Application Frame Right -->
+            </div>
+        </div>
+        <div id="appFooter" class="app-footer">
+            <!-- BEGIN Application Footer -->
+            <template is="dom-if" if="[[appFooterLoading]]">
+                <content id="appFooterLoader" select=".app-footer-loader"></content>
+            </template>
+            <template is="dom-if" if="[[!appFooterLoading]]">
+                <content id="appFooterContents" select=".app-footer-contents"></content>
+            </template>
+            <!-- END Application Footer -->
+        </div>
+    </template>
+</dom-module>
+<script>
+
+    Polymer({
+
+        is: 'app-container',
+
+        properties: {
+            appHeaderLoading: {
+                type: Boolean,
+                value: false
+            },
+            appLeftFrameLoading: {
+                type: Boolean,
+                value: false
+            },
+            appCenterFrameLoading: {
+                type: Boolean,
+                value: false
+            },
+            appRightFrameLoading: {
+                type: Boolean,
+                value: false
+            },
+            appFooterLoading: {
+                type: Boolean,
+                value: false
+            }
+        },
+
+        // Element Lifecycle
+        ready: function () {
+            // `ready` is called after all elements have been configured, but
+            // propagates bottom-up. This element's children are ready, but parents
+            // are not.
+            //
+            // This is the point where you should make modifications to the DOM (when
+            // necessary), or kick off any processes the element wants to perform.
+
+            // 'Private' variables
+            this._leftDrawer = {
+                targetElement: undefined,
+                useOverlayEffect: false
+            };
+            this._rightDrawer = {
+                targetElement: undefined,
+                useOverlayEffect: false
+            };
+
+            App.setAppContainer(this);  // <- THIS MUST BE CALLED FIRST, TO ESTABLISH A REFERENCE BETWEEN THE 'AppContainer' AND THE 'App' MANAGER MODULE
+        },
+
+        attached: function () {
+            // `attached` fires once the element and its parents have been inserted
+            // into a document.
+            //
+            // This is a good place to perform any work related to your element's
+            // visual state or active behavior (measuring sizes, beginning animations,
+            // loading resources, etc).
+        },
+
+        detached: function () {
+            // The analog to `attached`, `detached` fires when the element has been
+            // removed from a document.
+            //
+            // Use this to clean up anything you did in `attached`.
+        },
+
+
+        // Element Behavior
+        appChildren: function () {
+            return $(Polymer.dom(this).children);
+        },
+
+
+
+        // BEGIN = Modal Backdrop functions = BEGIN //
+        modalBackdropChildren: function () {
+            return $(Polymer.dom(this).querySelector('div.modal-backdrop-contents'));
+        },
+
+        showModalBackdrop: function () {
+            $(".modal-backdrop").removeClass("hide").addClass("show");
+        },
+
+        setModalBackdropContents: function (element) {
+            $('div.modal-backdrop-contents').empty();
+            $('div.modal-backdrop-contents').append(element);
+        },
+
+        hideModalBackdrop: function () {
+            $(".modal-backdrop").removeClass("show").addClass("hide");
+        },
+        // END = Modal Backdrop functions = END //
+
+
+
+        // BEGIN = App Header functions = BEGIN //
+        appHeaderChildren: function () {
+            return $(Polymer.dom(this).querySelector('div.app-header-contents'));
+        },
+
+        showAppHeader: function (options) {
+            $('div.app-header').show(options);
+        },
+
+        setAppHeaderContents: function (element) {
+            $('div.app-header-contents').empty();
+            $('div.app-header-contents').append(element);
+        },
+
+        hideAppHeader: function (options) {
+            $('div.app-header').hide(options);
+        },
+        // END = App Header functions = END //
+
+
+
+        // BEGIN = App Left Frame functions = BEGIN //
+        appLeftFrameChildren: function () {
+            return $(Polymer.dom(this).querySelector('div.app-left-frame-contents'));
+        },
+
+        showAppLeftFrame: function (options) {
+            $('div.app-left-frame').show(options);
+        },
+
+        setAppLeftFrameContents: function (element) {
+            $('div.app-left-frame-contents').empty();
+            $('div.app-left-frame-contents').append(element);
+        },
+
+        hideAppLeftFrame: function (options) {
+            $('div.app-left-frame').hide(options);
+        },
+
+        setAppLeftFrameAsDrawer: function (drawerOptions) {
+            if (!drawerOptions)
+                drawerOptions = {};
+
+            this._leftDrawer.useOverlayEffect = drawerOptions.overlay || false;
+
+            // Set/Override some properties
+            drawerOptions.position = 'left';
+            drawerOptions.containerTargetSelector = ".app-center-frame";
+            drawerOptions.overlay = false;
+
+            this._leftDrawer.targetElement = $(".app-left-frame").slideReveal(drawerOptions);
+        },
+
+        showLeftDrawer: function () {
+            if (!this._leftDrawer.targetElement)
+                throw "Please execute 'setAppLeftFrameAsDrawer' with appropriate options first.";
+
+            if (this._leftDrawer.useOverlayEffect) {
+                $(".app-left-frame").css('z-index', 1000);
+                this.showModalBackdrop();
+            }
+
+            this._leftDrawer.targetElement.slideReveal("show");
+        },
+
+        hideLeftDrawer: function () {
+            if (!this._leftDrawer.targetElement)
+                throw "Please execute 'setAppLeftFrameAsDrawer' with appropriate options first.";
+
+            if (this._leftDrawer.useOverlayEffect) {
+                this.hideModalBackdrop();
+                $(".app-left-frame").css('z-index', 100);
+            }
+
+            this._leftDrawer.targetElement.slideReveal("hide");
+        },
+        // END = App Left Frame functions = END //
+
+
+
+        // BEGIN = App Center Frame functions = BEGIN //
+        appCenterFrameChildren: function () {
+            return $(Polymer.dom(this).querySelector('div.app-center-frame-contents'));
+        },
+
+        showAppCenterFrame: function (options) {
+            $('div.app-center-frame').show(options);
+        },
+
+        setAppCenterFrameContents: function (element) {
+            $('div.app-center-frame-contents').empty();
+            $('div.app-center-frame-contents').append(element);
+        },
+
+        hideAppCenterFrame: function (options) {
+            $('div.app-center-frame').hide(options);
+        },
+        // END = App Center Frame functions = END //
+
+
+
+        // BEGIN = App Right Frame functions = BEGIN //
+        appRightFrameChildren: function () {
+            return $(Polymer.dom(this).querySelector('div.app-right-frame-contents'));
+        },
+
+        showAppRightFrame: function (options) {
+            $('div.app-right-frame').show(options);
+        },
+
+        setAppRightFrameContents: function (element) {
+            $('div.app-right-frame-contents').empty();
+            $('div.app-right-frame-contents').append(element);
+        },
+
+        hideAppRightFrame: function (options) {
+            $('div.app-right-frame').hide(options);
+        },
+
+        setAppRightFrameAsDrawer: function (drawerOptions) {
+            if (!drawerOptions)
+                drawerOptions = {};
+
+            this._rightDrawer.useOverlayEffect = drawerOptions.overlay || false;
+
+            // Set/Override some properties
+            drawerOptions.position = 'right';
+            drawerOptions.containerTargetSelector = ".app-center-frame";
+            drawerOptions.overlay = false;
+
+            this._rightDrawer.targetElement = $(".app-right-frame").slideReveal(drawerOptions);
+        },
+
+        showRightDrawer: function () {
+            if (!this._rightDrawer.targetElement)
+                throw "Please execute 'setAppRightFrameAsDrawer' with appropriate options first.";
+
+            if (this._rightDrawer.useOverlayEffect) {
+                $(".app-right-frame").css('z-index', 1000);
+                this.showModalBackdrop();
+            }
+
+            this._rightDrawer.targetElement.slideReveal("show");
+        },
+
+        hideRightDrawer: function () {
+            if (!this._rightDrawer.targetElement)
+                throw "Please execute 'setAppRightFrameAsDrawer' with appropriate options first.";
+
+            if (this._rightDrawer.useOverlayEffect) {
+                this.hideModalBackdrop();
+                $(".app-right-frame").css('z-index', 50);
+            }
+
+            this._rightDrawer.targetElement.slideReveal("hide");
+        },
+        // END = App Right Frame functions = END //
+
+
+
+        // BEGIN = App Footer functions = BEGIN //
+        appFooterChildren: function () {
+            return $(Polymer.dom(this).querySelector('div.app-footer-contents'));
+        },
+
+        showAppFooter: function (options) {
+            $('div.app-footer').show(options);
+        },
+
+        setAppFooterContents: function (element) {
+            $('div.app-footer-contents').empty();
+            $('div.app-footer-contents').append(element);
+        },
+
+        hideAppFooter: function (options) {
+            $('div.app-footer').hide(options);
+        },
+        // END = App Footer functions = END //
+
+
+
+        // BEGIN = Miscellaneous functions = BEGIN //
+        heartbeat: function () {
+            var _th = this;
+
+            App.Notify().showInfo('Beat');
+        }
+        // END = Miscellaneous functions = END //
+    });
+
+</script>
