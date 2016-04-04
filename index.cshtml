@@ -1,0 +1,244 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <environment names="Development">
+        <script src="~/lib/webcomponentsjs/webcomponents-lite.js"></script>
+        <script src="~/lib/es6-promise/es6-promise.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/lib/webcomponentsjs/webcomponents-lite.js"></script>
+        <script src="~/lib/es6-promise/es6-promise.js"></script>
+    </environment>
+
+    <link rel="import" href="@Url.Content("~/lib/ua-app/App.html")">
+    <link rel="import" href="@Url.Content("~/lib/ua-app-container/appContainer.html")">
+    
+
+
+    <link href="~/css/site.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0px;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-flex-direction: column;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .app-left-frame-contents {
+            flex: 1;
+            display: flex;
+            display: -webkit-flex;
+            -webkit-flex-direction: column;
+            flex-direction: column;
+        }
+
+        .app-center-frame-contents {
+            flex: 1;
+            display: flex;
+            display: -webkit-flex;
+            -webkit-flex-direction: column;
+            flex-direction: column;
+        }
+
+        .app-right-frame-contents {
+            flex: 1;
+            display: flex;
+            display: -webkit-flex;
+            -webkit-flex-direction: column;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body>
+    <app-container>
+        <div class="modal-backdrop-contents">Modal Backdrop contents</div>
+        <div class="app-header-loader">Loading Header, please wait...</div>
+        <div class="app-left-frame-loader">Loading Left Frame, please wait...</div>
+        <div class="app-center-frame-loader">Loading Center Frame, please wait...</div>
+        <div class="app-right-frame-loader">Loading Right Frame, please wait...</div>
+        <div class="app-footer-loader">Loading Footer, please wait...</div>
+
+
+
+        <div class="app-header-contents full-size">App Header</div>
+        <div class="app-left-frame-contents full-size">
+            App Left Frame<br /><br />
+            <a href="/">Home</a><br />
+            <a href="captainamerica">Captain America</a><br />
+            <a href="ironman">Iron Man</a><br />
+            <a href="spiderman">Spider Man</a>
+        </div>
+        <div class="app-center-frame-contents full-size">App Center Frame</div>
+        <div class="app-right-frame-contents full-size">
+            App Right Frame<br /><br />
+            <a href="/">Home</a><br />
+            <a href="captainamerica">Captain America</a><br />
+            <a href="ironman">Iron Man</a><br />
+            <a href="spiderman">Spider Man</a>
+
+            <button id="hideDrawer">Hide Drawer</button>
+            <button id="showDrawer">Show Drawer</button>
+        </div>
+        <div class="app-footer-contents full-size">App Footer</div>
+    </app-container>
+    <script type="text/javascript">
+
+        HTMLImports.whenReady(function () { // When all the Html imports are done
+            $(document).ready(function () { // and the dom is fully loaded ... 
+
+
+                
+                // First, alias some tedious object model paths
+                var el = App.ElementFactory();
+                var rm = App.AppRouteManager();
+                var ac = App.AppContainer();
+
+
+
+                // Then do Element registration in the ElementFactory elements ...
+                el.registerElement('captain-america', '@Url.Content("~/Elements/captainAmerica")')
+                el.registerElement('iron-man', '@Url.Content("~/Elements/ironman")')
+                el.registerElement('spider-man', '@Url.Content("~/Elements/spiderman")')
+
+                el.registerElement('edit-user-dialog', '@Url.Content("~/Elements/editUserDialog")')
+
+
+
+                // Then define routing ...
+                rm.registerRoute('/', function (ctx, next) {
+                    ac.setAppCenterFrameContents('<h1>App Frame Center</h1>');
+                });
+                rm.registerRoute('/captainamerica', function (ctx, next) {
+                    ac.showModalBackdrop();
+
+                    rm.loadAppCenterFrame('captain-america').then(function (element) {
+                        $(element).on('element-loaded', function () {
+                            ac.hideModalBackdrop();
+                        });
+                    }, function (error) {
+                        console.error(error);
+                    });
+                });
+                rm.registerRoute('/ironman', function (ctx, next) {
+                    ac.showModalBackdrop();
+                    App.Notify().confirmInfo('Are you sure?').then(function () {//Yes
+
+                        rm.loadAppCenterFrame('iron-man').then(function (element) {
+                            $(element).on('element-loaded', function () {
+                                ac.hideModalBackdrop();
+                            });
+                        }, function (error) {
+                            ac.hideModalBackdrop();
+                            console.error(error);
+                        });
+                    }, function () {//No
+                        ac.hideModalBackdrop();
+                    });
+                });
+                rm.registerRoute('/spiderman', function (ctx, next) {
+                    ac.showModalBackdrop();
+
+                    rm.loadAppCenterFrame('spider-man').then(function (element) {
+                        $(element).on('element-loaded', function () {
+                            ac.hideModalBackdrop();
+                        });
+                    }, function (error) {
+                        console.error(error);
+                    });
+                });
+                rm.registerRoute({
+                    hashbang: true
+                });
+
+
+
+
+                // ... Continue with application configuration ...
+                //ac.hideAppFooter();
+
+
+                ac.setAppLeftFrameAsDrawer({
+                    width: 250,
+                    push: false,
+                    overlay: false,
+                    top: 72,
+                    bottom: 40,
+                    autoEscape: false
+                });
+
+                ac.appRightFrameChildren().find("#hideDrawer").on("click", function () {
+                    ac.hideLeftDrawer();
+                });
+
+                ac.appRightFrameChildren().find("#showDrawer").on("click", function () {
+                    ac.showLeftDrawer();
+
+                    return;
+                    
+                    App.Notify().showModalDialog('edit-user-dialog', function (element) {
+                        // This is your Initialization function
+                        debugger;
+
+                        element.userData = {
+                            FirstName: 'Bruce',
+                            LastName: 'Wayne',
+                            Age: 42
+                        };
+                    }).then(function (elementAndData) {
+                        // Accept / Ok / Save function
+                        debugger;
+
+                    }, function (element) {
+                        // Reject / No / Cancel function
+                        debugger;
+                    });
+
+
+
+                    return;
+                    if ("WebSocket" in window) {
+                        alert("WebSocket is supported by your Browser!");
+
+                        // Let us open a web socket
+                        var ws = new WebSocket("ws://localhost:40746/");
+
+                        ws.onopen = function () {
+                            // Web Socket is connected, send data using send()
+                            ws.send("Message to send");
+                            alert("Message is sent...");
+                        };
+
+                        ws.onmessage = function (evt) {
+                            var received_msg = evt.data;
+                            alert("Message is received...");
+                        };
+
+                        ws.onclose = function () {
+                            // websocket is closed.
+                            alert("Connection is closed...");
+                        };
+                    }
+
+                    else {
+                        // The browser doesn't support WebSocket
+                        alert("WebSocket NOT supported by your Browser!");
+                    }
+                });
+
+
+
+
+
+
+
+
+
+            });
+        });
+    </script>
+</body>
+</html>
