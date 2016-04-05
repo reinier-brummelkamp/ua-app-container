@@ -1,7 +1,4 @@
-<dom-module id="shared-styles">
-    <template>
-        <style>
-            .app-header {
+ .app-header {
                 min-height: 70px;
                 border: 1px solid black;
                 z-index: 50;
@@ -69,6 +66,3 @@
                     display: none;
                     z-index: 0;
                 }
-        </style>
-    </template>
-</dom-module>
