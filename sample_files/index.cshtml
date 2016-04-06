@@ -12,10 +12,11 @@
         <script src="~/lib/es6-promise/es6-promise.js"></script>
     </environment>
 
-    <link rel="import" href="@Url.Content("~/lib/ua-app/App.html")">
-    <link rel="import" href="@Url.Content("~/lib/ua-app-container/appContainer.html")">
+    <link rel="import" href="@Url.Content(" ~/lib/ua-app/App.html")">
+    <link rel="import" href="@Url.Content(" ~/lib/ua-app-container/appContainer.html")">
 
-    @*<link href="~/css/site.css" rel="stylesheet" />*@
+    @*
+    <link href="~/css/site.css" rel="stylesheet" />*@
     <link href="~/lib/ua-app-container/app-container.css" rel="stylesheet" />
 
     <style>
@@ -28,7 +29,7 @@
             height: 100vh;
         }
 
-        .app-left-frame-contents {
+        .app-container-app-left-frame-contents {
             flex: 1;
             display: flex;
             display: -webkit-flex;
@@ -36,7 +37,7 @@
             flex-direction: column;
         }
 
-        .app-center-frame-contents {
+        .app-container-app-center-frame-contents {
             flex: 1;
             display: flex;
             display: -webkit-flex;
@@ -44,7 +45,7 @@
             flex-direction: column;
         }
 
-        .app-right-frame-contents {
+        .app-container-app-right-frame-contents {
             flex: 1;
             display: flex;
             display: -webkit-flex;
@@ -55,25 +56,25 @@
 </head>
 <body>
     <app-container>
-        <div class="modal-backdrop-contents">Modal Backdrop contents</div>
-        <div class="app-header-loader">Loading Header, please wait...</div>
-        <div class="app-left-frame-loader">Loading Left Frame, please wait...</div>
-        <div class="app-center-frame-loader">Loading Center Frame, please wait...</div>
-        <div class="app-right-frame-loader">Loading Right Frame, please wait...</div>
-        <div class="app-footer-loader">Loading Footer, please wait...</div>
+        <div class="app-container-modal-backdrop-contents">Modal Backdrop contents</div>
+        <div class="app-container-app-header-loader">Loading Header, please wait...</div>
+        <div class="app-container-app-left-frame-loader">Loading Left Frame, please wait...</div>
+        <div class="app-container-app-center-frame-loader">Loading Center Frame, please wait...</div>
+        <div class="app-container-app-right-frame-loader">Loading Right Frame, please wait...</div>
+        <div class="app-container-app-footer-loader">Loading Footer, please wait...</div>
 
 
 
-        <div class="app-header-contents full-size">App Header</div>
-        <div class="app-left-frame-contents full-size">
+        <div class="app-container-app-header-contents full-size">App Header</div>
+        <div class="app-container-app-left-frame-contents full-size">
             App Left Frame<br /><br />
             <a href="/">Home</a><br />
             <a href="captainamerica">Captain America</a><br />
             <a href="ironman">Iron Man</a><br />
             <a href="spiderman">Spider Man</a>
         </div>
-        <div class="app-center-frame-contents full-size">App Center Frame</div>
-        <div class="app-right-frame-contents full-size">
+        <div class="app-container-app-center-frame-contents full-size">App Center Frame</div>
+        <div class="app-container-app-right-frame-contents full-size">
             App Right Frame<br /><br />
             <a href="/">Home</a><br />
             <a href="captainamerica">Captain America</a><br />
@@ -83,15 +84,15 @@
             <button id="hideDrawer">Hide Drawer</button>
             <button id="showDrawer">Show Drawer</button>
         </div>
-        <div class="app-footer-contents full-size">App Footer</div>
+        <div class="app-container-app-footer-contents full-size">App Footer</div>
     </app-container>
     <script type="text/javascript">
 
         HTMLImports.whenReady(function () { // When all the Html imports are done
-            $(document).ready(function () { // and the dom is fully loaded ... 
+            $(document).ready(function () { // and the dom is fully loaded ...
 
 
-                
+
                 // First, alias some tedious object model paths
                 var el = App.ElementFactory();
                 var rm = App.AppRouteManager();
@@ -178,7 +179,7 @@
                     ac.showLeftDrawer();
 
                     return;
-                    
+
                     App.Notify().showModalDialog('edit-user-dialog', function (element) {
                         // This is your Initialization function
                         debugger;

@@ -1,11 +1,11 @@
- .app-header {
+ .app-container-app-header {
                 min-height: 70px;
                 border: 1px solid black;
                 z-index: 50;
                 background-color: white;
             }
 
-            .app-frame {
+            .app-container-app-frame {
                 flex: 1;
                 display: -webkit-flex;
                 display: flex;
@@ -15,14 +15,14 @@
                 background-color: white;
             }
 
-                .app-frame > .app-left-frame {
+                .app-container-app-frame > .app-container-app-left-frame {
                     min-width: 150px;
                     border: 1px solid black;
                     z-index: 100;
                     background-color: white;
                 }
 
-                .app-frame > .app-center-frame {
+                .app-container-app-frame > .app-container-app-center-frame {
                     display: -webkit-flex;
                     display: flex;
                     flex: 1;
@@ -31,27 +31,27 @@
                     background-color: white;
                 }
 
-                .app-frame > .app-right-frame {
+                .app-container-app-frame > .app-container-app-right-frame {
                     min-width: 250px;
                     border: 1px solid black;
                     z-index: 50;
                     background-color: white;
                 }
 
-            .app-footer {
+            .app-container-app-footer {
                 min-height: 38px;
                 border: 1px solid black;
                 z-index: 25;
                 background-color: white;
             }
 
-            .modal-backdrop {
+            .app-container-modal-backdrop {
                 display: flex;
                 justify-content: center;
                 align-items: center;
             }
 
-                .modal-backdrop.show {
+                .app-container-modal-backdrop.show {
                     /*display: block;*/
                     position: fixed;
                     top: 0;
@@ -62,7 +62,7 @@
                     z-index: 500;
                 }
 
-                .modal-backdrop.hide {
+                .app-container-modal-backdrop.hide {
                     display: none;
                     z-index: 0;
                 }
