@@ -1,6 +1,7 @@
 
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../ua-app/App.html">
+
 <dom-module id="app-container">
     <template>
         <style>
@@ -111,11 +112,13 @@
             // 'Private' variables
             this._leftDrawer = {
                 targetElement: undefined,
-                useOverlayEffect: false
+                useOverlayEffect: false,
+                options: {}
             };
             this._rightDrawer = {
                 targetElement: undefined,
-                useOverlayEffect: false
+                useOverlayEffect: false,
+                options: {}
             };
 
             App.setAppContainer(this);  // <- THIS MUST BE CALLED FIRST, TO ESTABLISH A REFERENCE BETWEEN THE 'AppContainer' AND THE 'App' MANAGER MODULE
@@ -210,6 +213,7 @@
                 drawerOptions = {};
 
             this._leftDrawer.useOverlayEffect = drawerOptions.overlay || false;
+            this._leftDrawer.options = drawerOptions;
 
             // Set/Override some properties
             drawerOptions.position = 'left';
@@ -241,6 +245,14 @@
             }
 
             this._leftDrawer.targetElement.slideReveal("hide");
+        },
+
+        setLeftDrawerWidth: function (width) {
+            if (!this._leftDrawer.targetElement)
+                throw "Please execute 'setAppLeftFrameAsDrawer' with appropriate options first.";
+            
+            this._leftDrawer.options.width = width;
+            this._leftDrawer.targetElement.slideReveal("setWidth", this._leftDrawer.options);
         },
         // END = App Left Frame functions = END //
 
@@ -290,6 +302,7 @@
                 drawerOptions = {};
 
             this._rightDrawer.useOverlayEffect = drawerOptions.overlay || false;
+            this._rightDrawer.options = drawerOptions;
 
             // Set/Override some properties
             drawerOptions.position = 'right';
@@ -321,6 +334,14 @@
             }
 
             this._rightDrawer.targetElement.slideReveal("hide");
+        },
+
+        setRightDrawerWidth: function (width) {
+            if (!this._rightDrawer.targetElement)
+                throw "Please execute 'setAppRightFrameAsDrawer' with appropriate options first.";
+
+            this._rightDrawer.options.width = width;
+            this._rightDrawer.targetElement.slideReveal("setWidth", this._rightDrawer.options);
         },
         // END = App Right Frame functions = END //
 
