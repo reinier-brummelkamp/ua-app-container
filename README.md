@@ -7,6 +7,8 @@ App container component for the Solitude framework.
 `app-container.css` contains sample styles that define a basic `flex-box` layout for the `app-container` element.
 Use `app-container.css` as a starting point to define or customize the styling for your app-container requirements.
 
+## TODO!!!
+AppCenterFrame now expects a neon-animated-pages.app-container-app-center-frame element, abstract this to allow animations to be configurable 
 
 ## Demo files (copy for a quickstart)
 
