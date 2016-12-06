@@ -78,6 +78,16 @@
         is: 'app-container',
 
         properties: {
+            // Private properties
+            _leftDrawerShown: {
+                type: Boolean,
+                value: false
+            },
+            _rightDrawerShown: {
+                type: Boolean,
+                value: false
+            },
+            // Public properties
             appHeaderLoading: {
                 type: Boolean,
                 value: false
@@ -220,6 +230,7 @@
             drawerOptions.containerTargetSelector = ".app-container-app-center-frame";
             drawerOptions.overlay = false;
 
+            this._leftDrawerShown = false;
             this._leftDrawer.targetElement = $(".app-container-app-left-frame").slideReveal(drawerOptions);
         },
 
@@ -233,6 +244,7 @@
             }
 
             this._leftDrawer.targetElement.slideReveal("show");
+            this._leftDrawerShown = true;
         },
 
         hideLeftDrawer: function () {
@@ -245,6 +257,14 @@
             }
 
             this._leftDrawer.targetElement.slideReveal("hide");
+            this._leftDrawerShown = false;
+        },
+
+        toggleLeftDrawer: function() {
+            if(this._leftDrawerShown)
+                hideLeftDrawer();
+            else
+                showLeftDrawer();
         },
 
         setLeftDrawerWidth: function (width) {
@@ -309,6 +329,7 @@
             drawerOptions.containerTargetSelector = ".app-container-app-center-frame";
             drawerOptions.overlay = false;
 
+            this._rightDrawerShown = false;
             this._rightDrawer.targetElement = $(".app-container-app-right-frame").slideReveal(drawerOptions);
         },
 
@@ -322,6 +343,7 @@
             }
 
             this._rightDrawer.targetElement.slideReveal("show");
+            this._rightDrawerShown = true;
         },
 
         hideRightDrawer: function () {
@@ -334,6 +356,14 @@
             }
 
             this._rightDrawer.targetElement.slideReveal("hide");
+            this._rightDrawerShown = false;
+        },
+
+        toggleRightDrawer: function() {
+            if(this._rightDrawerShown)
+                hideRightDrawer();
+            else
+                showRightDrawer();
         },
 
         setRightDrawerWidth: function (width) {
